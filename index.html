@@ -826,7 +826,7 @@ function submit() {
   const name=document.getElementById('name').value.trim();
   const phone=document.getElementById('phone').value.trim();
   const notes=document.getElementById('notes').value.trim();
-  const ps=document.querySelector('[name="partysize"].selected input')?.value||'Not specified';
+  const ps=state.partysize||'Not specified';
   let customStr='';
   if(state.boxtype==='custom'&&state.customSelected.length)
     customStr=state.customSelected.map(x=>x.n+' (₹'+x.p+')').join(', ');
