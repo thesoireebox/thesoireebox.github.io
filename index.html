@@ -714,11 +714,41 @@ const themeItems = {
 
 let state = { theme:'', boxtype:'', customSelected:[] };
 
+const singleBoxThemes = ['arabian', 'gatsby', 'hawaiian-deluxe'];
+
 function pick(el, name, val) {
   document.querySelectorAll(`[name="${name}"]`).forEach(r => r.closest('.opt').classList.remove('selected'));
   el.classList.add('selected');
   state[name] = val;
-  if(name==='theme' && state.boxtype==='custom') buildCustom(val);
+
+  if(name === 'theme') {
+    // If single-box theme selected, force Signature and hide Core + Custom
+    if(singleBoxThemes.includes(val)) {
+      // Hide core and custom options
+      document.querySelectorAll('[name="boxtype"]').forEach(r => {
+        const opt = r.closest('.opt');
+        const v = r.value;
+        if(v === 'core' || v === 'custom') {
+          opt.style.display = 'none';
+          opt.classList.remove('selected');
+        } else {
+          opt.style.display = 'flex';
+        }
+      });
+      // Auto-select Signature
+      const sigOpt = document.querySelector('[name="boxtype"][value="signature"]');
+      if(sigOpt) {
+        sigOpt.closest('.opt').classList.add('selected');
+        state.boxtype = 'signature';
+      }
+    } else {
+      // Show all box type options
+      document.querySelectorAll('[name="boxtype"]').forEach(r => {
+        r.closest('.opt').style.display = 'flex';
+      });
+    }
+    if(state.boxtype === 'custom') buildCustom(val);
+  }
 }
 
 function buildCustom(theme) {
