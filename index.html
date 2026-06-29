@@ -589,10 +589,10 @@ body {
     <div class="field">
       <label class="field-label">Party size <span class="req">✦</span></label>
       <div class="options">
-        <label class="opt" onclick="pick(this,'partysize','u10')"><input type="radio" name="partysize" value="u10"><div class="opt-indicator"></div><div class="opt-body"><div class="opt-main">Up to 10 guests</div></div></label>
-        <label class="opt" onclick="pick(this,'partysize','10-20')"><input type="radio" name="partysize" value="10-20"><div class="opt-indicator"></div><div class="opt-body"><div class="opt-main">10–20 guests</div></div></label>
-        <label class="opt" onclick="pick(this,'partysize','20-30')"><input type="radio" name="partysize" value="20-30"><div class="opt-indicator"></div><div class="opt-body"><div class="opt-main">20–30 guests</div></div></label>
-        <label class="opt" onclick="pick(this,'partysize','30+')"><input type="radio" name="partysize" value="30+"><div class="opt-indicator"></div><div class="opt-body"><div class="opt-main">30+ guests</div></div></label>
+        <div class="opt" id="ps-u10" onclick="pickSize('u10')"><div class="opt-indicator" id="psi-u10"></div><div class="opt-body"><div class="opt-main">Up to 10 guests</div></div></div>
+        <div class="opt" id="ps-10-20" onclick="pickSize('10-20')"><div class="opt-indicator" id="psi-10-20"></div><div class="opt-body"><div class="opt-main">10–20 guests</div></div></div>
+        <div class="opt" id="ps-20-30" onclick="pickSize('20-30')"><div class="opt-indicator" id="psi-20-30"></div><div class="opt-body"><div class="opt-main">20–30 guests</div></div></div>
+        <div class="opt" id="ps-30+" onclick="pickSize('30+')"><div class="opt-indicator" id="psi-30+"></div><div class="opt-body"><div class="opt-main">30+ guests</div></div></div>
       </div>
     </div>
 
@@ -813,6 +813,16 @@ function next1() {
   if(!ok) return;
   if(state.boxtype==='custom') { buildCustom(state.theme); goSec(2); }
   else goSec(3);
+}
+
+function pickSize(val) {
+  ['u10','10-20','20-30','30+'].forEach(v => {
+    const el = document.getElementById('ps-'+v);
+    if(el) el.classList.remove('selected');
+  });
+  const el = document.getElementById('ps-'+val);
+  if(el) el.classList.add('selected');
+  state.partysize = val;
 }
 
 function submit() {
