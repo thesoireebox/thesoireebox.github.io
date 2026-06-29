@@ -600,7 +600,7 @@ body {
       <label class="field-label">Party date <span class="req">✦</span></label>
       <input type="date" id="partydate" />
       <div class="field-helper">We need at least 3 days' notice to pack and deliver.</div>
-      <div class="field-error">Please select a date</div>
+      <div class="field-error">Please pick a date at least 3 days from today</div>
     </div>
 
     <div class="field" id="f-city">
@@ -818,6 +818,15 @@ function next1() {
   else goSec(3);
 }
 
+// Set min date on party date input to 3 days from today
+(function() {
+  const min = new Date(); min.setDate(min.getDate()+3);
+  const max = new Date(); max.setFullYear(max.getFullYear()+2);
+  const fmt = d => d.toISOString().split('T')[0];
+  const el = document.getElementById('partydate');
+  if(el) { el.min = fmt(min); el.max = fmt(max); }
+})();
+
 function pickSize(val) {
   ['u10','10-20','20-30','30+'].forEach(v => {
     const el = document.getElementById('ps-'+v);
@@ -832,7 +841,13 @@ function submit() {
   const date=document.getElementById('partydate').value;
   const city=document.getElementById('city').value.trim();
   let ok=true;
-  document.getElementById('f-date').classList.toggle('has-error',!date); if(!date) ok=false;
+  const today = new Date(); today.setHours(0,0,0,0);
+  const minDate = new Date(today); minDate.setDate(today.getDate()+3);
+  const maxDate = new Date(today); maxDate.setFullYear(today.getFullYear()+2);
+  const selectedDate = date ? new Date(date) : null;
+  const dateValid = selectedDate && selectedDate >= minDate && selectedDate <= maxDate;
+  document.getElementById('f-date').classList.toggle('has-error',!dateValid);
+  if(!dateValid) ok=false;
   document.getElementById('f-city').classList.toggle('has-error',!city); if(!city) ok=false;
   if(!ok) return;
 
