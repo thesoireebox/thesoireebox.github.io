@@ -442,7 +442,7 @@ body {
       <label class="field-label">WhatsApp number <span class="req">✦</span></label>
       <input type="tel" id="phone" placeholder="e.g. 98765 43210" />
       <div class="field-helper">We'll confirm your order and share payment details here.</div>
-      <div class="field-error">Please enter your WhatsApp number</div>
+      <div class="field-error">Please enter a valid 10-digit Indian mobile number</div>
     </div>
 
     <div class="field" id="f-theme">
@@ -805,7 +805,10 @@ function next1() {
   const phone=document.getElementById('phone').value.trim();
   let ok=true;
   document.getElementById('f-name').classList.toggle('has-error',!name); if(!name) ok=false;
-  document.getElementById('f-phone').classList.toggle('has-error',!phone); if(!phone) ok=false;
+  const phoneClean = phone.replace(/\s+/g,'').replace(/^\+91/,'');
+  const phoneValid = /^[6-9]\d{9}$/.test(phoneClean);
+  document.getElementById('f-phone').classList.toggle('has-error',!phoneValid); 
+  if(!phoneValid) ok=false;
   if(!state.theme){ document.getElementById('theme-err').style.display='block'; ok=false; }
   else { document.getElementById('theme-err').style.display='none'; }
   if(!state.boxtype){ document.getElementById('boxtype-err').style.display='block'; ok=false; }
