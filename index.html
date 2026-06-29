@@ -729,23 +729,27 @@ function buildCustom(theme) {
     `<div class="custom-section-label">Items — ${themeNames[theme]||theme}</div>` +
     `<div class="options">` +
     items.map((item,i) => `
-      <label class="opt" onclick="toggleItem(this,${i},'${theme}')">
-        <input type="checkbox" data-idx="${i}" data-price="${item.p}">
-        <div class="opt-check">✓</div>
+      <div class="opt" id="ci-${i}" onclick="toggleItem(${i},'${theme}')">
+        <div class="opt-check" id="cc-${i}">✓</div>
         <div class="opt-body">
           <div class="opt-main">${item.n}</div>
           <div class="opt-price">₹${item.p.toLocaleString('en-IN')}</div>
         </div>
-      </label>`).join('') + `</div>`;
+      </div>`).join('') + `</div>`;
 }
 
-function toggleItem(el, idx, theme) {
-  el.classList.toggle('selected');
+function toggleItem(idx, theme) {
+  const el = document.getElementById('ci-'+idx);
   const item = (themeItems[theme]||[])[idx];
   if(!item) return;
   const i = state.customSelected.findIndex(x=>x.idx===idx);
-  if(i>-1) state.customSelected.splice(i,1);
-  else state.customSelected.push({idx,p:item.p,n:item.n});
+  if(i>-1) {
+    state.customSelected.splice(i,1);
+    el.classList.remove('selected');
+  } else {
+    state.customSelected.push({idx,p:item.p,n:item.n});
+    el.classList.add('selected');
+  }
   updateTotal();
 }
 
@@ -788,13 +792,15 @@ function submit() {
   document.getElementById('f-date').classList.toggle('has-error',!date); if(!date) ok=false;
   document.getElementById('f-city').classList.toggle('has-error',!city); if(!city) ok=false;
   if(!ok) return;
+
   const name=document.getElementById('name').value.trim();
   const phone=document.getElementById('phone').value.trim();
   const notes=document.getElementById('notes').value.trim();
   const ps=document.querySelector('[name="partysize"].selected input')?.value||'Not specified';
   let customStr='';
   if(state.boxtype==='custom'&&state.customSelected.length)
-    customStr=state.customSelected.map(x=>x.n).join(', ');
+    customStr=state.customSelected.map(x=>x.n+' (₹'+x.p+')').join(', ');
+
   const rows=[
     {k:'Name',v:name},
     {k:'WhatsApp',v:phone},
@@ -806,6 +812,21 @@ function submit() {
     {k:'Delivery area',v:city},
     ...(notes?[{k:'Notes',v:notes}]:[]),
   ];
+
+  // Send to Formspree — replace mgojzdoo with your Formspree form ID
+  const formData = new FormData();
+  rows.forEach(r => formData.append(r.k, r.v));
+  formData.append('_subject', 'New Soirée Box Order — ' + name + ' · ' + (themeNames[state.theme]||state.theme));
+
+  fetch('https://formspree.io/f/mgojzdoo', {
+    method: 'POST',
+    body: formData,
+    headers: { 'Accept': 'application/json' }
+  }).then(r => {
+    if(!r.ok) console.error('Formspree error', r.status);
+  }).catch(e => console.error('Submit error', e));
+
+  // Show thank you regardless
   document.getElementById('ty-rows').innerHTML=rows.map(r=>`<div class="ty-row"><span class="ty-key">${r.k}</span><span class="ty-val">${r.v}</span></div>`).join('');
   document.querySelectorAll('.section').forEach(s=>s.classList.remove('active'));
   document.getElementById('pfill').style.width='100%';
