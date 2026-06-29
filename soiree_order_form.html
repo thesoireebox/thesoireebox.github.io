@@ -1,0 +1,860 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>The Soirée Box — Order Form</title>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;1,400;1,600&family=Jost:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+:root {
+  --cream: #F5F0E8;
+  --cream-light: #FAF7F2;
+  --cream-dark: #EDE5D8;
+  --brown: #3D2314;
+  --brown-mid: #7B4F2E;
+  --gold: #B07D45;
+  --gold-light: #D4A96A;
+  --muted: #9A8472;
+  --border: #DDD0BC;
+  --white: #FDFAF5;
+}
+* { box-sizing: border-box; margin: 0; padding: 0; }
+html { scroll-behavior: smooth; }
+
+body {
+  background: var(--cream);
+  font-family: 'Jost', sans-serif;
+  color: var(--brown);
+  min-height: 100vh;
+}
+
+/* ── HEADER ── */
+.header {
+  background: var(--cream-light);
+  border-bottom: 1px solid var(--border);
+  padding: 3rem 1.5rem 2.5rem;
+  text-align: center;
+  position: relative;
+  overflow: hidden;
+}
+.header-ornament {
+  font-size: 1.1rem;
+  letter-spacing: .35em;
+  color: var(--gold-light);
+  margin-bottom: 1.25rem;
+  display: block;
+}
+.header-the {
+  font-family: 'Jost', sans-serif;
+  font-size: 11px;
+  font-weight: 500;
+  letter-spacing: .3em;
+  text-transform: uppercase;
+  color: var(--brown);
+  display: block;
+  margin-bottom: .1rem;
+}
+.header-soiree {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: clamp(3rem, 10vw, 4.5rem);
+  font-weight: 400;
+  font-style: italic;
+  color: var(--gold);
+  line-height: 1;
+  display: block;
+}
+.header-box {
+  font-family: 'Jost', sans-serif;
+  font-size: clamp(1rem, 3vw, 1.4rem);
+  font-weight: 500;
+  letter-spacing: .35em;
+  text-transform: uppercase;
+  color: var(--brown);
+  display: block;
+  margin-top: .1rem;
+}
+.header-tagline {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 1.05rem;
+  font-style: italic;
+  color: var(--muted);
+  margin-top: 1rem;
+  letter-spacing: .02em;
+}
+.header-rule {
+  width: 60px;
+  height: 1px;
+  background: var(--gold-light);
+  margin: 1.25rem auto 0;
+}
+
+/* ── PROGRESS ── */
+.progress-bar-wrap {
+  background: var(--cream-dark);
+  border-bottom: 1px solid var(--border);
+  padding: .65rem 1.5rem;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  position: sticky;
+  top: 0;
+  z-index: 20;
+}
+.progress-track {
+  flex: 1;
+  height: 2px;
+  background: var(--border);
+  border-radius: 2px;
+  overflow: hidden;
+}
+.progress-fill {
+  height: 100%;
+  background: var(--gold);
+  border-radius: 2px;
+  transition: width .5s ease;
+  width: 33%;
+}
+.progress-text {
+  font-size: 10px;
+  font-weight: 500;
+  letter-spacing: .1em;
+  text-transform: uppercase;
+  color: var(--muted);
+  white-space: nowrap;
+}
+
+/* ── FORM BODY ── */
+.form-wrap {
+  max-width: 580px;
+  margin: 0 auto;
+  padding: 2.5rem 1.5rem 5rem;
+}
+
+/* ── SECTIONS ── */
+.section { display: none; }
+.section.active { display: block; }
+
+.section-eyebrow {
+  font-size: 10px;
+  font-weight: 500;
+  letter-spacing: .25em;
+  text-transform: uppercase;
+  color: var(--gold);
+  margin-bottom: .5rem;
+}
+.section-title {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 2rem;
+  font-weight: 500;
+  color: var(--brown);
+  line-height: 1.1;
+  margin-bottom: .4rem;
+}
+.section-desc {
+  font-size: 13px;
+  font-weight: 300;
+  color: var(--muted);
+  margin-bottom: 2.25rem;
+  line-height: 1.7;
+}
+.divider {
+  width: 40px;
+  height: 1px;
+  background: var(--gold-light);
+  margin: .75rem 0 1.75rem;
+}
+
+/* ── FIELDS ── */
+.field { margin-bottom: 1.75rem; }
+.field-label {
+  display: block;
+  font-size: 10px;
+  font-weight: 500;
+  letter-spacing: .18em;
+  text-transform: uppercase;
+  color: var(--muted);
+  margin-bottom: .6rem;
+}
+.field-label .req { color: var(--gold); margin-left: 2px; }
+.field input[type="text"],
+.field input[type="tel"],
+.field input[type="date"],
+.field textarea {
+  width: 100%;
+  padding: .8rem 1rem;
+  background: var(--white);
+  border: 1px solid var(--border);
+  border-radius: 0;
+  font-family: 'Jost', sans-serif;
+  font-size: 14px;
+  font-weight: 300;
+  color: var(--brown);
+  outline: none;
+  transition: border-color .2s;
+  -webkit-appearance: none;
+  appearance: none;
+}
+.field input:focus,
+.field textarea:focus { border-color: var(--gold); }
+.field textarea { min-height: 90px; resize: vertical; line-height: 1.6; }
+.field-helper {
+  font-size: 11px;
+  color: var(--muted);
+  margin-top: .4rem;
+  font-weight: 300;
+  line-height: 1.5;
+}
+.field-error {
+  font-size: 11px;
+  color: #a0522d;
+  margin-top: .4rem;
+  display: none;
+}
+.field.has-error input,
+.field.has-error textarea { border-color: #a0522d; }
+.field.has-error .field-error { display: block; }
+
+/* ── OPTIONS ── */
+.options { display: flex; flex-direction: column; gap: .5rem; }
+.opt {
+  display: flex;
+  align-items: flex-start;
+  gap: 14px;
+  padding: .9rem 1rem;
+  border: 1px solid var(--border);
+  background: var(--white);
+  cursor: pointer;
+  transition: border-color .15s, background .15s;
+  position: relative;
+}
+.opt:hover { border-color: var(--gold-light); background: var(--cream-light); }
+.opt.selected { border-color: var(--gold); background: var(--cream-light); }
+.opt input { display: none; }
+.opt-indicator {
+  width: 16px; height: 16px;
+  border: 1.5px solid var(--border);
+  border-radius: 50%;
+  flex-shrink: 0;
+  margin-top: 2px;
+  transition: border-color .15s;
+  display: flex; align-items: center; justify-content: center;
+}
+.opt.selected .opt-indicator {
+  border-color: var(--gold);
+  background: var(--gold);
+}
+.opt.selected .opt-indicator::after {
+  content: '';
+  width: 5px; height: 5px;
+  border-radius: 50%;
+  background: var(--white);
+  display: block;
+}
+.opt-check {
+  width: 16px; height: 16px;
+  border: 1.5px solid var(--border);
+  border-radius: 0;
+  flex-shrink: 0;
+  margin-top: 2px;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 10px;
+  color: transparent;
+  transition: all .15s;
+}
+.opt.selected .opt-check {
+  border-color: var(--gold);
+  background: var(--gold);
+  color: var(--white);
+}
+.opt-body { flex: 1; }
+.opt-main {
+  font-size: 13px;
+  font-weight: 400;
+  color: var(--brown);
+  line-height: 1.4;
+}
+.opt-sub {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 13px;
+  font-style: italic;
+  color: var(--muted);
+  margin-top: 1px;
+}
+.opt-price {
+  font-size: 11px;
+  color: var(--muted);
+  font-weight: 300;
+  margin-top: 1px;
+}
+.opt-badge {
+  position: absolute;
+  top: 8px; right: 8px;
+  font-size: 9px;
+  font-weight: 500;
+  letter-spacing: .1em;
+  text-transform: uppercase;
+  color: var(--gold);
+  border: 1px solid var(--gold-light);
+  padding: 1px 6px;
+}
+
+/* ── CUSTOM ITEMS ── */
+.custom-section-label {
+  font-size: 10px;
+  font-weight: 500;
+  letter-spacing: .18em;
+  text-transform: uppercase;
+  color: var(--muted);
+  padding: .75rem 0 .4rem;
+  margin-top: .5rem;
+  border-bottom: 1px solid var(--border);
+  margin-bottom: .5rem;
+}
+.custom-total-bar {
+  background: var(--brown);
+  color: var(--cream-light);
+  padding: 1rem 1.25rem;
+  margin-top: 1.25rem;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+.custom-total-label {
+  font-size: 10px;
+  font-weight: 500;
+  letter-spacing: .18em;
+  text-transform: uppercase;
+  color: var(--gold-light);
+}
+.custom-total-sub {
+  font-size: 10px;
+  color: var(--muted);
+  margin-top: 2px;
+  font-weight: 300;
+}
+.custom-total-amt {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 1.75rem;
+  font-weight: 600;
+  color: var(--gold-light);
+  line-height: 1;
+}
+.custom-total-note {
+  font-size: 9px;
+  color: var(--muted);
+  margin-top: 2px;
+  text-align: right;
+  font-weight: 300;
+}
+
+/* ── BUTTONS ── */
+.nav-row {
+  display: flex;
+  gap: 10px;
+  margin-top: 2.5rem;
+  padding-top: 1.5rem;
+  border-top: 1px solid var(--border);
+}
+.btn-back {
+  padding: .85rem 1.5rem;
+  border: 1px solid var(--border);
+  background: none;
+  font-family: 'Jost', sans-serif;
+  font-size: 11px;
+  font-weight: 500;
+  letter-spacing: .15em;
+  text-transform: uppercase;
+  color: var(--muted);
+  cursor: pointer;
+  transition: border-color .15s, color .15s;
+}
+.btn-back:hover { border-color: var(--brown); color: var(--brown); }
+.btn-next {
+  flex: 1;
+  padding: .85rem 1.5rem;
+  border: none;
+  background: var(--brown);
+  font-family: 'Jost', sans-serif;
+  font-size: 11px;
+  font-weight: 500;
+  letter-spacing: .18em;
+  text-transform: uppercase;
+  color: var(--cream-light);
+  cursor: pointer;
+  transition: background .15s;
+}
+.btn-next:hover { background: var(--brown-mid); }
+
+/* ── THANK YOU ── */
+.thankyou {
+  display: none;
+  text-align: center;
+  padding: 3rem 1.5rem;
+}
+.thankyou.active { display: block; }
+.ty-ornament {
+  font-size: 1rem;
+  letter-spacing: .35em;
+  color: var(--gold-light);
+  display: block;
+  margin-bottom: 1rem;
+}
+.ty-title {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 2.5rem;
+  font-weight: 400;
+  font-style: italic;
+  color: var(--gold);
+  margin-bottom: .5rem;
+}
+.ty-sub {
+  font-family: 'Jost', sans-serif;
+  font-size: 13px;
+  font-weight: 300;
+  color: var(--muted);
+  line-height: 1.8;
+  max-width: 360px;
+  margin: 0 auto 2rem;
+}
+.ty-summary {
+  background: var(--white);
+  border: 1px solid var(--border);
+  padding: 1.5rem;
+  max-width: 380px;
+  margin: 0 auto;
+  text-align: left;
+}
+.ty-summary-title {
+  font-size: 9px;
+  font-weight: 500;
+  letter-spacing: .2em;
+  text-transform: uppercase;
+  color: var(--muted);
+  margin-bottom: 1rem;
+  padding-bottom: .5rem;
+  border-bottom: 1px solid var(--border);
+}
+.ty-row {
+  display: flex;
+  justify-content: space-between;
+  gap: 12px;
+  padding: .4rem 0;
+  border-bottom: 1px solid var(--cream-dark);
+  font-size: 12px;
+}
+.ty-row:last-child { border-bottom: none; }
+.ty-key { color: var(--muted); font-weight: 300; }
+.ty-val { font-weight: 400; color: var(--brown); text-align: right; max-width: 58%; }
+</style>
+</head>
+<body>
+
+<!-- HEADER -->
+<header class="header">
+  <span class="header-ornament">✦ ✦ ✦</span>
+  <span class="header-the">The</span>
+  <span class="header-soiree">Soirée</span>
+  <span class="header-box">Box</span>
+  <p class="header-tagline">Your party. Your theme. All in a box.</p>
+  <div class="header-rule"></div>
+</header>
+
+<!-- PROGRESS -->
+<div class="progress-bar-wrap">
+  <div class="progress-track"><div class="progress-fill" id="pfill"></div></div>
+  <div class="progress-text" id="plabel">Step 1 of 3</div>
+</div>
+
+<div class="form-wrap">
+
+  <!-- ── SECTION 1 ── -->
+  <div class="section active" id="sec1">
+    <div class="section-eyebrow">Let's begin</div>
+    <h2 class="section-title">Tell us about<br>your soirée</h2>
+    <div class="divider"></div>
+    <p class="section-desc">A few details and we'll have your box ready to go.</p>
+
+    <div class="field" id="f-name">
+      <label class="field-label">Your name <span class="req">✦</span></label>
+      <input type="text" id="name" placeholder="e.g. Priya Sharma" />
+      <div class="field-error">Please enter your name</div>
+    </div>
+
+    <div class="field" id="f-phone">
+      <label class="field-label">WhatsApp number <span class="req">✦</span></label>
+      <input type="tel" id="phone" placeholder="e.g. 98765 43210" />
+      <div class="field-helper">We'll confirm your order and share payment details here.</div>
+      <div class="field-error">Please enter your WhatsApp number</div>
+    </div>
+
+    <div class="field" id="f-theme">
+      <label class="field-label">Choose your theme <span class="req">✦</span></label>
+      <div class="options">
+        <label class="opt" onclick="pick(this,'theme','3patti')">
+          <input type="radio" name="theme" value="3patti">
+          <div class="opt-indicator"></div>
+          <div class="opt-body">
+            <div class="opt-main">🃏 The 3Patti Party Box</div>
+            <div class="opt-sub">Deal the cards, set the stakes, let the fun begin</div>
+            <div class="opt-price">Core ₹2,999 &nbsp;·&nbsp; Signature ₹3,499</div>
+          </div>
+          <div class="opt-badge">Best seller</div>
+        </label>
+        <label class="opt" onclick="pick(this,'theme','masquerade')">
+          <input type="radio" name="theme" value="masquerade">
+          <div class="opt-indicator"></div>
+          <div class="opt-body">
+            <div class="opt-main">🎭 The Murder Masquerade Box</div>
+            <div class="opt-sub">Glamour, mystery, and a whodunit in every box</div>
+            <div class="opt-price">Core ₹4,999 &nbsp;·&nbsp; Signature ₹8,999</div>
+          </div>
+        </label>
+        <label class="opt" onclick="pick(this,'theme','arabian')">
+          <input type="radio" name="theme" value="arabian">
+          <div class="opt-indicator"></div>
+          <div class="opt-body">
+            <div class="opt-main">🕌 The Arabian Nights Box</div>
+            <div class="opt-sub">One thousand and one reasons to throw this party</div>
+            <div class="opt-price">₹5,499</div>
+          </div>
+        </label>
+        <label class="opt" onclick="pick(this,'theme','gatsby')">
+          <input type="radio" name="theme" value="gatsby">
+          <div class="opt-indicator"></div>
+          <div class="opt-body">
+            <div class="opt-main">🥂 The Great Gatsby Box</div>
+            <div class="opt-sub">Old money glamour, 1920s all the way</div>
+            <div class="opt-price">₹4,999</div>
+          </div>
+        </label>
+        <label class="opt" onclick="pick(this,'theme','hawaiian')">
+          <input type="radio" name="theme" value="hawaiian">
+          <div class="opt-indicator"></div>
+          <div class="opt-body">
+            <div class="opt-main">🌺 The Hawaiian Box — Basic</div>
+            <div class="opt-sub">Sun, hibiscus, and good vibes only</div>
+            <div class="opt-price">Core ₹2,999 &nbsp;·&nbsp; Signature ₹5,499</div>
+          </div>
+        </label>
+        <label class="opt" onclick="pick(this,'theme','hawaiian-deluxe')">
+          <input type="radio" name="theme" value="hawaiian-deluxe">
+          <div class="opt-indicator"></div>
+          <div class="opt-body">
+            <div class="opt-main">🌴 The Hawaiian Box — Deluxe</div>
+            <div class="opt-sub">The full luau experience, nothing left out</div>
+            <div class="opt-price">₹9,499</div>
+          </div>
+          <div class="opt-badge">Full set</div>
+        </label>
+      </div>
+      <div class="field-error" id="theme-err" style="display:none">Please choose a theme</div>
+    </div>
+
+    <div class="field" id="f-boxtype">
+      <label class="field-label">Box type <span class="req">✦</span></label>
+      <div class="options">
+        <label class="opt" onclick="pick(this,'boxtype','core')">
+          <input type="radio" name="boxtype" value="core">
+          <div class="opt-indicator"></div>
+          <div class="opt-body">
+            <div class="opt-main">Core Box</div>
+            <div class="opt-sub">The essential items — everything you need, nothing extra</div>
+          </div>
+        </label>
+        <label class="opt" onclick="pick(this,'boxtype','signature')">
+          <input type="radio" name="boxtype" value="signature">
+          <div class="opt-indicator"></div>
+          <div class="opt-body">
+            <div class="opt-main">Signature Box</div>
+            <div class="opt-sub">The full curated set — backdrop, welcome board, every detail</div>
+          </div>
+          <div class="opt-badge">Most popular</div>
+        </label>
+        <label class="opt" onclick="pick(this,'boxtype','custom')">
+          <input type="radio" name="boxtype" value="custom">
+          <div class="opt-indicator"></div>
+          <div class="opt-body">
+            <div class="opt-main">Custom Box</div>
+            <div class="opt-sub">Handpick exactly the items you want — we'll price it for you</div>
+          </div>
+        </label>
+        <label class="opt" onclick="pick(this,'boxtype','help')">
+          <input type="radio" name="boxtype" value="help">
+          <div class="opt-indicator"></div>
+          <div class="opt-body">
+            <div class="opt-main">Help me decide</div>
+            <div class="opt-sub">Tell us about your party and we'll recommend the right box</div>
+          </div>
+        </label>
+      </div>
+      <div class="field-error" id="boxtype-err" style="display:none">Please choose a box type</div>
+    </div>
+
+    <div class="nav-row">
+      <button class="btn-next" onclick="next1()">Continue →</button>
+    </div>
+  </div>
+
+  <!-- ── SECTION 2: CUSTOM ── -->
+  <div class="section" id="sec2">
+    <div class="section-eyebrow">Customise</div>
+    <h2 class="section-title">Pick your<br>items</h2>
+    <div class="divider"></div>
+    <p class="section-desc">Select the pieces you'd like. We'll calculate your total and send it on WhatsApp.</p>
+
+    <div id="custom-wrap"></div>
+
+    <div class="custom-total-bar">
+      <div>
+        <div class="custom-total-label">Your selection</div>
+        <div class="custom-total-sub" id="item-count">0 items selected</div>
+      </div>
+      <div style="text-align:right">
+        <div class="custom-total-amt" id="total-amt">₹0</div>
+        <div class="custom-total-note">items cost · final price on WhatsApp</div>
+      </div>
+    </div>
+
+    <div class="nav-row">
+      <button class="btn-back" onclick="goSec(1)">← Back</button>
+      <button class="btn-next" onclick="goSec(3)">Continue →</button>
+    </div>
+  </div>
+
+  <!-- ── SECTION 3: DELIVERY ── -->
+  <div class="section" id="sec3">
+    <div class="section-eyebrow">Almost there</div>
+    <h2 class="section-title">Delivery<br>details</h2>
+    <div class="divider"></div>
+    <p class="section-desc">Just a few last details and your order is placed.</p>
+
+    <div class="field">
+      <label class="field-label">Party size <span class="req">✦</span></label>
+      <div class="options">
+        <label class="opt" onclick="pick(this,'partysize','u10')"><input type="radio" name="partysize" value="u10"><div class="opt-indicator"></div><div class="opt-body"><div class="opt-main">Up to 10 guests</div></div></label>
+        <label class="opt" onclick="pick(this,'partysize','10-20')"><input type="radio" name="partysize" value="10-20"><div class="opt-indicator"></div><div class="opt-body"><div class="opt-main">10–20 guests</div></div></label>
+        <label class="opt" onclick="pick(this,'partysize','20-30')"><input type="radio" name="partysize" value="20-30"><div class="opt-indicator"></div><div class="opt-body"><div class="opt-main">20–30 guests</div></div></label>
+        <label class="opt" onclick="pick(this,'partysize','30+')"><input type="radio" name="partysize" value="30+"><div class="opt-indicator"></div><div class="opt-body"><div class="opt-main">30+ guests</div></div></label>
+      </div>
+    </div>
+
+    <div class="field" id="f-date">
+      <label class="field-label">Party date <span class="req">✦</span></label>
+      <input type="date" id="partydate" />
+      <div class="field-helper">We need at least 3 days' notice to pack and deliver.</div>
+      <div class="field-error">Please select a date</div>
+    </div>
+
+    <div class="field" id="f-city">
+      <label class="field-label">Delivery area <span class="req">✦</span></label>
+      <input type="text" id="city" placeholder="e.g. Bandra, Mumbai" />
+      <div class="field-error">Please enter your delivery area</div>
+    </div>
+
+    <div class="field">
+      <label class="field-label">Anything else?</label>
+      <textarea id="notes" placeholder="Special requests, questions, personal touches…"></textarea>
+    </div>
+
+    <div class="nav-row">
+      <button class="btn-back" onclick="goSec(1)">← Back</button>
+      <button class="btn-next" onclick="submit()">Place my order ✦</button>
+    </div>
+  </div>
+
+  <!-- ── THANK YOU ── -->
+  <div class="thankyou" id="ty">
+    <span class="ty-ornament">✦ ✦ ✦</span>
+    <h2 class="ty-title">You're all set!</h2>
+    <p class="ty-sub">We'll WhatsApp you within a few hours to confirm your order and share payment details. Can't wait to make your party unforgettable.</p>
+    <div class="ty-summary">
+      <div class="ty-summary-title">Order summary</div>
+      <div id="ty-rows"></div>
+    </div>
+  </div>
+
+</div>
+
+<script>
+const themeNames = {
+  '3patti':'🃏 The 3Patti Party Box',
+  'masquerade':'🎭 The Murder Masquerade Box',
+  'arabian':'🕌 The Arabian Nights Box',
+  'gatsby':'🥂 The Great Gatsby Box',
+  'hawaiian':'🌺 The Hawaiian Box — Basic',
+  'hawaiian-deluxe':'🌴 The Hawaiian Box — Deluxe'
+};
+const boxtypeNames = {
+  'core':'Core Box','signature':'Signature Box',
+  'custom':'Custom Box','help':'Help me decide'
+};
+const themeItems = {
+  '3patti':[
+    {n:'Poker honeycomb décor (8pc)',p:720},
+    {n:'Poker print napkins (20pc)',p:180},
+    {n:'Poker themed table cloth',p:250},
+    {n:'4m poker themed bunting',p:200},
+    {n:'Poker spiral ornament (30pc)',p:500},
+    {n:'Poker toothpicks (25pc)',p:120},
+    {n:'Dice foil balloons — Red (3pc)',p:120},
+    {n:'Dice foil balloons — Black (3pc)',p:120},
+  ],
+  'masquerade':[
+    {n:'Masquerade masks (15pc)',p:615},
+    {n:'Black & white ostrich feathers',p:420},
+    {n:'Cocktail napkins (20pc)',p:220},
+    {n:'Black & gold paper lanterns',p:450},
+    {n:'Red hydrangeas (6pc)',p:300},
+    {n:'Black hydrangeas (6pc)',p:300},
+    {n:'Pearl necklace decor (5pc)',p:150},
+    {n:'Artificial flowers',p:300},
+    {n:'Golden decorative sticks (4pc)',p:237},
+    {n:'Backdrop',p:420},
+    {n:'Welcome board',p:500},
+    {n:'Murder mystery game',p:2000},
+  ],
+  'arabian':[
+    {n:'Backdrop',p:400},
+    {n:'Cushion covers (4pc)',p:570},
+    {n:'Faux coins',p:420},
+    {n:'Pearls roll',p:270},
+    {n:'Metal lanterns (3pc)',p:450},
+    {n:'Belly dancing scarves (5pc)',p:900},
+    {n:'Welcome board',p:500},
+  ],
+  'gatsby':[
+    {n:'Foldable black fans (3pc)',p:480},
+    {n:'Black fur boa (4pc)',p:320},
+    {n:'Satin gloves set',p:130},
+    {n:'Vintage style Gatsby set',p:335},
+    {n:'Gatsby headgear (10pc)',p:1000},
+    {n:'Cushions (4pc)',p:700},
+  ],
+  'hawaiian':[
+    {n:'Garlands + bracelet + tiara',p:450},
+    {n:'Eyewear',p:550},
+    {n:'Umbrella drink sticks (20pc)',p:65},
+    {n:'Hawaiian toothpicks (25pc)',p:80},
+    {n:'61pc balloon arch',p:190},
+    {n:'Hanging flamingos (2pc)',p:300},
+    {n:'Hibiscus hair clips (10pc)',p:145},
+    {n:'Pineapple decor (3pc)',p:150},
+    {n:'Tropical string lights',p:235},
+    {n:'Tropical leaves (20pc)',p:210},
+    {n:'Tiki board (2pc)',p:600},
+    {n:'Aloha board (2pc)',p:200},
+    {n:'Photo booth props',p:200},
+  ],
+  'hawaiian-deluxe':[
+    {n:'All Hawaiian Basic items',p:3375},
+    {n:'Inflatable coconut tree cooler',p:710},
+    {n:'Linen table runner (monstera)',p:400},
+    {n:'Straw table skirt',p:330},
+    {n:'Navigation Luau stand',p:500},
+  ]
+};
+
+let state = { theme:'', boxtype:'', customSelected:[] };
+
+function pick(el, name, val) {
+  document.querySelectorAll(`[name="${name}"]`).forEach(r => r.closest('.opt').classList.remove('selected'));
+  el.classList.add('selected');
+  state[name] = val;
+  if(name==='theme' && state.boxtype==='custom') buildCustom(val);
+}
+
+function buildCustom(theme) {
+  const items = themeItems[theme]||[];
+  state.customSelected = [];
+  updateTotal();
+  document.getElementById('custom-wrap').innerHTML =
+    `<div class="custom-section-label">Items — ${themeNames[theme]||theme}</div>` +
+    `<div class="options">` +
+    items.map((item,i) => `
+      <label class="opt" onclick="toggleItem(this,${i},'${theme}')">
+        <input type="checkbox" data-idx="${i}" data-price="${item.p}">
+        <div class="opt-check">✓</div>
+        <div class="opt-body">
+          <div class="opt-main">${item.n}</div>
+          <div class="opt-price">₹${item.p.toLocaleString('en-IN')}</div>
+        </div>
+      </label>`).join('') + `</div>`;
+}
+
+function toggleItem(el, idx, theme) {
+  el.classList.toggle('selected');
+  const item = (themeItems[theme]||[])[idx];
+  if(!item) return;
+  const i = state.customSelected.findIndex(x=>x.idx===idx);
+  if(i>-1) state.customSelected.splice(i,1);
+  else state.customSelected.push({idx,p:item.p,n:item.n});
+  updateTotal();
+}
+
+function updateTotal() {
+  const total = state.customSelected.reduce((s,x)=>s+x.p,0);
+  const count = state.customSelected.length;
+  document.getElementById('total-amt').textContent='₹'+total.toLocaleString('en-IN');
+  document.getElementById('item-count').textContent=count+' item'+(count===1?'':'s')+' selected';
+}
+
+function goSec(n) {
+  document.querySelectorAll('.section').forEach(s=>s.classList.remove('active'));
+  document.getElementById('sec'+n).classList.add('active');
+  const pct=n===1?'33%':n===2?'66%':'100%';
+  const lbl=n===1?'Step 1 of 3':n===2?'Step 2 of 3':'Step 3 of 3';
+  document.getElementById('pfill').style.width=pct;
+  document.getElementById('plabel').textContent=lbl;
+  window.scrollTo({top:0,behavior:'smooth'});
+}
+
+function next1() {
+  const name=document.getElementById('name').value.trim();
+  const phone=document.getElementById('phone').value.trim();
+  let ok=true;
+  document.getElementById('f-name').classList.toggle('has-error',!name); if(!name) ok=false;
+  document.getElementById('f-phone').classList.toggle('has-error',!phone); if(!phone) ok=false;
+  if(!state.theme){ document.getElementById('theme-err').style.display='block'; ok=false; }
+  else { document.getElementById('theme-err').style.display='none'; }
+  if(!state.boxtype){ document.getElementById('boxtype-err').style.display='block'; ok=false; }
+  else { document.getElementById('boxtype-err').style.display='none'; }
+  if(!ok) return;
+  if(state.boxtype==='custom') { buildCustom(state.theme); goSec(2); }
+  else goSec(3);
+}
+
+function submit() {
+  const date=document.getElementById('partydate').value;
+  const city=document.getElementById('city').value.trim();
+  let ok=true;
+  document.getElementById('f-date').classList.toggle('has-error',!date); if(!date) ok=false;
+  document.getElementById('f-city').classList.toggle('has-error',!city); if(!city) ok=false;
+  if(!ok) return;
+  const name=document.getElementById('name').value.trim();
+  const phone=document.getElementById('phone').value.trim();
+  const notes=document.getElementById('notes').value.trim();
+  const ps=document.querySelector('[name="partysize"].selected input')?.value||'Not specified';
+  let customStr='';
+  if(state.boxtype==='custom'&&state.customSelected.length)
+    customStr=state.customSelected.map(x=>x.n).join(', ');
+  const rows=[
+    {k:'Name',v:name},
+    {k:'WhatsApp',v:phone},
+    {k:'Theme',v:themeNames[state.theme]||state.theme},
+    {k:'Box type',v:boxtypeNames[state.boxtype]||state.boxtype},
+    ...(customStr?[{k:'Custom items',v:customStr}]:[]),
+    {k:'Party size',v:ps},
+    {k:'Party date',v:date},
+    {k:'Delivery area',v:city},
+    ...(notes?[{k:'Notes',v:notes}]:[]),
+  ];
+  document.getElementById('ty-rows').innerHTML=rows.map(r=>`<div class="ty-row"><span class="ty-key">${r.k}</span><span class="ty-val">${r.v}</span></div>`).join('');
+  document.querySelectorAll('.section').forEach(s=>s.classList.remove('active'));
+  document.getElementById('pfill').style.width='100%';
+  document.getElementById('plabel').textContent='Done!';
+  document.getElementById('ty').classList.add('active');
+  window.scrollTo({top:0,behavior:'smooth'});
+}
+</script>
+</body>
+</html>
