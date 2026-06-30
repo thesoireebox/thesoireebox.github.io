@@ -456,13 +456,12 @@ body {
             <div class="opt-sub">Deal the cards, set the stakes, let the fun begin</div>
             <div class="opt-price">Core ₹2,999 &nbsp;·&nbsp; Signature ₹3,499</div>
           </div>
-          <div class="opt-badge">Best seller</div>
         </label>
         <label class="opt" onclick="pick(this,'theme','masquerade')">
           <input type="radio" name="theme" value="masquerade">
           <div class="opt-indicator"></div>
           <div class="opt-body">
-            <div class="opt-main">🎭 The Murder Masquerade Box</div>
+            <div class="opt-main">🎭 The Masquerade Box</div>
             <div class="opt-sub">Glamour, mystery, and a whodunit in every box</div>
             <div class="opt-price">Core ₹4,999 &nbsp;·&nbsp; Signature ₹8,999</div>
           </div>
@@ -493,6 +492,7 @@ body {
             <div class="opt-sub">Sun, hibiscus, and good vibes only</div>
             <div class="opt-price">Core ₹2,999 &nbsp;·&nbsp; Signature ₹5,499</div>
           </div>
+          <div class="opt-badge">Best seller</div>
         </label>
         <label class="opt" onclick="pick(this,'theme','hawaiian-deluxe')">
           <input type="radio" name="theme" value="hawaiian-deluxe">
@@ -511,6 +511,14 @@ body {
     <div class="field" id="f-boxtype">
       <label class="field-label">Box type <span class="req">✦</span></label>
       <div class="options">
+        <label class="opt" onclick="pick(this,'boxtype','custom')">
+          <input type="radio" name="boxtype" value="custom">
+          <div class="opt-indicator"></div>
+          <div class="opt-body">
+            <div class="opt-main">Custom Box</div>
+            <div class="opt-sub">Handpick exactly the items you want — we'll price it for you</div>
+          </div>
+        </label>
         <label class="opt" onclick="pick(this,'boxtype','core')">
           <input type="radio" name="boxtype" value="core">
           <div class="opt-indicator"></div>
@@ -527,14 +535,6 @@ body {
             <div class="opt-sub">The full curated set — backdrop, welcome board, every detail</div>
           </div>
           <div class="opt-badge">Most popular</div>
-        </label>
-        <label class="opt" onclick="pick(this,'boxtype','custom')">
-          <input type="radio" name="boxtype" value="custom">
-          <div class="opt-indicator"></div>
-          <div class="opt-body">
-            <div class="opt-main">Custom Box</div>
-            <div class="opt-sub">Handpick exactly the items you want — we'll price it for you</div>
-          </div>
         </label>
         <label class="opt" onclick="pick(this,'boxtype','help')">
           <input type="radio" name="boxtype" value="help">
@@ -636,7 +636,7 @@ body {
 <script>
 const themeNames = {
   '3patti':'🃏 The 3Patti Party Box',
-  'masquerade':'🎭 The Murder Masquerade Box',
+  'masquerade':'🎭 The Masquerade Box',
   'arabian':'🕌 The Arabian Nights Box',
   'gatsby':'🥂 The Great Gatsby Box',
   'hawaiian':'🌺 The Hawaiian Box — Basic',
